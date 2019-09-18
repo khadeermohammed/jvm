@@ -3,7 +3,7 @@ node {
         git 'https://github.com/demise712/jdk'
     }
     stage('Compile-Package') {
-        def mvnHome = tool name: 'maven', type: 'maven'
+        def mvnHome = tool name: '', type: 'maven'
         sh "${mvnHome}/bin/mvn package"
     }
 }
