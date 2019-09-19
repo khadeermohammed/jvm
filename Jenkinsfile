@@ -8,5 +8,6 @@ node {
     }
     stage('Deploy JDK') {
         sh 'sudo ansible-playbook /var/lib/jenkins/workspace/jvm_build/oracle_jdk.yml'
-        
+  
+    }      
 }
