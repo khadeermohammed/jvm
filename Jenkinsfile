@@ -1,6 +1,8 @@
 node {
     stage('SCM Checkout'){
-        git url: 'https://github.com/demise712/jdk.git'
+        git url: 'https://github.com/demise712/jdk.git',
+            credentialID: 'demise712',
+            branch: 'master'
     }
     stage('Compile-Package') {
         def mvnHome = tool name: 'MAVEN3', type: 'maven'
