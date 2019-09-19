@@ -1,7 +1,7 @@
 ---
 - hosts: localhost
   #remote_user: ansible
-  remote_user: ed
+  remote_user: ansible
   #sudo: yes
   become: true
   vars:
@@ -27,7 +27,7 @@
     command: mkdir -p {{java_name}}
 
   - name: Download Java
-    get_url: url={{ jdk_tarball_url }}  dest={{ java_archive }} owner=ed group=ed mode=744
+    get_url: url={{ jdk_tarball_url }}  dest={{ java_archive }} owner=jenkins group=jenkins mode=744
 
   - name: Unpack archive
     action: shell tar -xzvf {{java_archive}} -C {{download_folder}}
