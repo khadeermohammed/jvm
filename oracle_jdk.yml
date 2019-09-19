@@ -2,7 +2,7 @@
 - hosts: localhost
   #remote_user: ansible
   remote_user: ansible
-  sudo: yes
+  #sudo: yes
   #become: true
   vars:
     jdk_dir: 8.222.10.1
