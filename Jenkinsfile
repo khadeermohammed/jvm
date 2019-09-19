@@ -9,7 +9,7 @@ node {
         sh "${mvnHome}/bin/mvn package"
     }
     stage('Deploy JDK') {
-        sh 'sudo ansible-playbook /var/lib/jenkins/workspace/jvm_build/oracle_jdk.yml'
+        sh 'sudo ansible-playbook /var/lib/jenkins/workspace/jvm2/oracle_jdk.yml'
   
     }      
 }
