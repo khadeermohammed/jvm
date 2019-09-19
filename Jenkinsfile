@@ -8,5 +8,4 @@ node {
     }
     ansiblePlaybook(
         playbook: '/var/lib/jenkins/workspace/jvm2/oracle_jdk.yml')
-   }
 }
