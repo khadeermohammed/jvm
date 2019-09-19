@@ -2,8 +2,8 @@
 - hosts: localhost
   #remote_user: ansible
   remote_user: ansible
-  #sudo: yes
-  become: true
+  sudo: yes
+  #become: true
   vars:
     jdk_dir: 8.222.10.1
     jdk_archive: amazon-corretto-8.222.10.1-linux-x64.tar.gz
@@ -27,7 +27,7 @@
     command: mkdir -p {{java_name}}
 
   - name: Download Java
-    get_url: url={{ jdk_tarball_url }}  dest={{ java_archive }} owner=jenkins group=jenkins mode=744
+    get_url: url={{ jdk_tarball_url }}  dest={{ java_archive }} owner=root group=root mode=744
 
   - name: Unpack archive
     action: shell tar -xzvf {{java_archive}} -C {{download_folder}}
