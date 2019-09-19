@@ -23,8 +23,12 @@
 
   tasks:
   - name: Create Directory structure
-    command: mkdir -p {{download_folder}}
-    command: mkdir -p {{java_name}}
+    file:
+      path: {{download_folder}}
+      path: {{java_name}}
+      state: directory
+    #command: mkdir -p {{download_folder}}
+    #command: mkdir -p {{java_name}}
 
   - name: Download Java
     get_url: url={{ jdk_tarball_url }}  dest={{ java_archive }} owner=root group=root mode=744
