@@ -1,6 +1,7 @@
 ---
 - hosts: localhost
-  remote_user: ansible
+  #remote_user: ansible
+  remote_user: ed
   #sudo: yes
   become: true
   vars:
