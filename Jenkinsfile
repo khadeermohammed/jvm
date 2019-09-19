@@ -6,6 +6,7 @@ node {
         def mvnHome = tool name: 'MAVEN3', type: 'maven'
         sh "${mvnHome}/bin/mvn package"
     }
-    ansiblePlaybook(
-        playbook: '/var/lib/jenkins/workspace/jvm_build/oracle_jdk.yml')
+    stage('Deploy JDK') {
+        sh 'sudo ansible-playbook /var/lib/jenkins/workspace/jvm_build/oracle_jdk.yml'
+        
 }
