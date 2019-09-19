@@ -9,8 +9,6 @@ node {
     ansiColor('xterm') {
     ansiblePlaybook(
         playbook: '/var/lib/jenkins/workspace/jvm2/oracle_jdk.yml',
-        #inventory: 'path/to/inventory.ini',
-        #credentialsId: 'sample-ssh-key',
         colorized: true)
    }
 }
