@@ -1,11 +1,11 @@
 node {
     stage('SCM Checkout'){
-        git 'https://github.com/demise712/jdk.git'
+        git url: 'https://github.com/demise712/jdk.git'
     }
     stage('Compile-Package') {
         def mvnHome = tool name: 'MAVEN3', type: 'maven'
         sh "${mvnHome}/bin/mvn package"
     }
     ansiblePlaybook(
-        playbook: '/var/lib/jenkins/workspace/jvm2/oracle_jdk.yml')
+        playbook: '/var/lib/jenkins/workspace/jvm_build/oracle_jdk.yml')
 }
