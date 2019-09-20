@@ -2,7 +2,7 @@ node {
     stage('SCM Checkout'){
         git url: 'https://github.com/demise712/jdk.git',
             credentialID: 'demise712',
-            env.JAVA_HOME = tool 'JDK-1.8'
+            env.JAVA_HOME = tool 'JDK-1.8',
             branch: 'master'
     }
     stage('Compile-Package') {
