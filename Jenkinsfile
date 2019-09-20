@@ -7,7 +7,6 @@ node {
     stage('Compile-Package') {
         def mvnHome = tool name: 'MAVEN3', type: 'maven'
         sh "${mvnHome}/bin/mvn package"
-        env.JAVA_HOME = tool 'JDK-1.8'
     }
     stage('Deploy JDK') {
         sh 'sudo ansible-playbook /var/lib/jenkins/workspace/jvm2/oracle_jdk.yml'
