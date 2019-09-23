@@ -17,7 +17,6 @@
     java_subversion: 222
     java_build_custom: 10.1
     jdk_version_detail_custom: "{{ java_version }}.{{ java_subversion }}.{{ java_build_custom }}"
-    #jdk_tarball_hash: 6599a081ce56dda81ee7ac23802d6e67
     jdk_tarball_url: "https://d3pxv6yz143wms.cloudfront.net/{{ jdk_version_detail_custom }}/{{ jdk_archive }}"
 
   tasks:
@@ -63,14 +62,13 @@
   - copy:
       content: |
                 #!/bin/bash
-                export JDK_HOME={{ java_name }}
-                export JAVA_HOME={{ java_name }}
-                export JRE_HOME={{ java_name }}/jre
-                export PATH=$PATH:{{ java_name }}/bin:{{ java_name }}/jre/bin
+                export JAVA_HOME= /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.201.b09-2.el7_6.x86_64
+                export JRE_HOME= /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.201.b09-2.el7_6.x86_64/jre
+                export PATH=$PATH:/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.201.b09-2.el7_6.x86_64/bin
       dest: /etc/profile.d/oracle_jdk.sh
 
   # Fix the executable permission
-  - name: Set executable perission
+  - name: Set executable permission
     file: path={{profile_path}}/oracle_jdk.sh owner=root group=root mode=0555 state=file recurse=no
 
   # Export the env on th fly to make system wide change 
