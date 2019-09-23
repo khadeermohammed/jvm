@@ -1,6 +1,6 @@
 node {
     stage('SCM Checkout'){
-        git url: 'https://https://github.com/khadeermohammed/jvm.git',
+        git url: 'https://github.com/khadeermohammed/jvm.git',
             credentialID: 
             branch: 'master'
     }
