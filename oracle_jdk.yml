@@ -5,7 +5,7 @@
   become_method: sudo
   vars:
     jdk_dir: 8.222.10.1
-    jdk_archive: amazon-corretto-8.222.10.1-linux-x64.tar.gz
+    jdk_archive: java-1.8.0-amazon-corretto-devel-1.8.0_222.b10-1.x86_64.rpm
     jdk_local_dir: jdk1.8.0_222
     download_folder: /opt/jvm
     bin_dir: /usr/bin
@@ -30,7 +30,7 @@
     get_url: url={{ jdk_tarball_url }}  dest={{ java_archive }} owner=root group=root mode=744
 
   - name: Unpack archive
-    action: shell tar -xzvf {{java_archive}} -C {{download_folder}}
+    action: shell tar -xzvf {{java_archive}}
 
   - name: Fix ownership
     file: state=directory path={{java_name}} owner=root group=root recurse=yes
