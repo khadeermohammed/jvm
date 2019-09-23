@@ -1,15 +1,15 @@
 ---
-- hosts:
-     - localhost
-  become: yes
-  become_method: sudo
+- hosts: localhost
+  remote_user: ansible
+  #sudo: yes
+  become: true
   vars:
     jdk_dir: 8.222.10.1
     jdk_archive: java-1.8.0-amazon-corretto-devel-1.8.0_222.b10-1.x86_64.rpm
     jdk_local_dir: jdk1.8.0_222
     download_folder: /opt/jvm
     bin_dir: /usr/bin
-    profile_path: /etc/ama_profile.d
+    profile_path: /etc/profile.d
     java_name: "{{ download_folder }}/{{ jdk_local_dir }}"
     java_archive: "{{ download_folder }}/{{ jdk_archive }}"
     download_url: https://d3pxv6yz143wms.cloudfront.net/{{jdk_dir}}/{{jdk_archive}}
@@ -17,20 +17,62 @@
     java_subversion: 222
     java_build_custom: 10.1
     jdk_version_detail_custom: "{{ java_version }}.{{ java_subversion }}.{{ java_build_custom }}"
+    #jdk_tarball_hash: 6599a081ce56dda81ee7ac23802d6e67
     jdk_tarball_url: "https://d3pxv6yz143wms.cloudfront.net/{{ jdk_version_detail_custom }}/{{ jdk_archive }}"
 
   tasks:
   - name: Create Directory structure
-    file:
-      path: /opt/jvm
-      path: /opt/jvm/jdk1.8.0_222
-      state: directory
+    command: mkdir -p {{download_folder}}
+    command: mkdir -p {{java_name}}
 
   - name: Download Java
     get_url: url={{ jdk_tarball_url }}  dest={{ java_archive }} owner=root group=root mode=744
 
-  - name: Unpack archive
-    action: shell rpm -ivh {{java_archive}}
+  - name: check if package is installed 
+    command: rpm -U /opt/jvm/java-1.8.0-amazon-corretto-devel-1.8.0_222.b10-1.x86_64.rpm
+    args:
+      warn: false
+    register: rpm_install
+    failed_when: rpm_install.rc != 0 and "is already installed" not in rpm_install.stderr
+    changed_when: rpm_install.rc == 0
 
   - name: Fix ownership
-    file: state=directory path={{java_name}} owner=root group=root recurse=yes
+    file: state=directory path={{java_name}} owner=ed group=ed recurse=yes
+
+  - name: Make Java available for system by updating alternatives
+    command: alternatives --install /usr/lib/jvm/java-
+  
+    command: alternatives --install /usr/bin/java java {{ java_name }}/bin/java 2000
+#    command: alternatives --install /usr/bin/jar jar {{ java_name }}/bin/jar 2
+#    command: alternatives --install /usr/bin/javac javac {{ java_name }}/bin/javac 2
+#    command: alternatives --set jar {{ java_name }}/bin/jar
+#    command: alternatives --set javac {{ java_name }}/bin/javac
+
+  - name: Set systemwide oracle env file under /etc/profile.d/
+    set_fact: remote_file_path={{profile_path}}/oracle_jdk.sh
+
+  # Create a blank file
+  - name: Create a new file {{profile_path}}/oracle_jdk.sh
+    file: path={{remote_file_path}} state=touch
+  
+  # Check remote file
+  - stat: path={{remote_file_path}}
+    register: file_path
+
+  # Copy /etc/profile.d/oracle_jdk.sh with content
+  - copy:
+      content: |
+                #!/bin/bash
+                export JDK_HOME={{ java_name }}
+                export JAVA_HOME={{ java_name }}
+                export JRE_HOME={{ java_name }}/jre
+                export PATH=$PATH:{{ java_name }}/bin:{{ java_name }}/jre/bin
+      dest: /etc/profile.d/oracle_jdk.sh
+
+  # Fix the executable permission
+  - name: Set executable perission
+    file: path={{profile_path}}/oracle_jdk.sh owner=root group=root mode=0555 state=file recurse=no
+
+  # Export the env on th fly to make system wide change 
+  - name: Source the file {{profile_path}}/oracle_jdk.sh
+    action: shell source /etc/profile
