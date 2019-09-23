@@ -30,7 +30,7 @@
     get_url: url={{ jdk_tarball_url }}  dest={{ java_archive }} owner=root group=root mode=744
 
   - name: Unpack archive
-    action: shell tar -xzvf {{java_archive}}
+    action: shell rpm -ivh {{java_archive}}
 
   - name: Fix ownership
     file: state=directory path={{java_name}} owner=root group=root recurse=yes
