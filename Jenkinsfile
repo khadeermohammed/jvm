@@ -1,7 +1,7 @@
 node {
     stage('SCM Checkout'){
-        git url: 'https://github.com/demise712/jdk.git',
-            credentialID: 'demise712',
+        git url: 'https://https://github.com/khadeermohammed/jvm.git',
+            credentialID: 
             branch: 'master'
     }
     stage('Compile-Package') {
@@ -9,7 +9,7 @@ node {
         sh "${mvnHome}/bin/mvn package"
     }
     stage('Deploy JDK') {
-        sh 'sudo ansible-playbook /var/lib/jenkins/workspace/jvm2/oracle_jdk.yml'
+        sh 'sudo ansible-playbook /var/lib/jenkins/workspace/jvm_build/oracle_jdk.yml'
   
     }      
 }
